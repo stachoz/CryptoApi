@@ -1,9 +1,9 @@
-package com.example.cryptoapi.dtos;
+package com.example.cryptoapi.dtos.coin;
 
 import com.example.cryptoapi.models.Coin;
 
 public class CoinDtoMapper {
-    public static Coin map(AddCoinDto dto){
+    public static Coin map(CoinDto dto){
         Coin coin = new Coin();
         coin.setName(dto.getName());
         coin.setSymbol(dto.getSymbol());
