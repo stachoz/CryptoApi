@@ -2,8 +2,8 @@ package com.example.cryptoapi.errors;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiRequestException extends RuntimeException{
-    private HttpStatus httpStatus;
+public class ApiRequestException extends RuntimeException {
+    private final HttpStatus httpStatus;
 
     public ApiRequestException(String message, HttpStatus httpStatus) {
         super(message);

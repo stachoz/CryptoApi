@@ -7,19 +7,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class TransactionDto {
-    private Long id;
+    private Long transactionId;
     private BigDecimal amount;
     private BigDecimal prize;
     private Date date;
     private TransactionType type;
-    private Coin coin;
+    private Long coinId;
 
-    public Coin getCoin() {
-        return coin;
+    public Long getCoinId() {
+        return coinId;
     }
 
-    public void setCoin(Coin coin) {
-        this.coin = coin;
+    public void setCoinId(Long coinId) {
+        this.coinId = coinId;
     }
 
     public TransactionType getType() {
@@ -30,12 +30,12 @@ public class TransactionDto {
         this.type = type;
     }
 
-    public Long getId() {
-        return id;
+    public Long getTransactionId() {
+        return transactionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 
     public BigDecimal getAmount() {
