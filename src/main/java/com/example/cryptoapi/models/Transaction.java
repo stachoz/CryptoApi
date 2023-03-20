@@ -1,6 +1,7 @@
 package com.example.cryptoapi.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,8 +16,11 @@ public class Transaction {
     @NotNull
     private BigDecimal amount;
     private BigDecimal prize;
-    private Date date;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeAdded;
     @Enumerated(EnumType.STRING)
+    @NotBlank
     private TransactionType type;
     @ManyToOne
     @JoinColumn(name = "coin_id")
@@ -46,12 +50,12 @@ public class Transaction {
         this.prize = prize;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTimeAdded() {
+        return timeAdded;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimeAdded(Date timeAdded) {
+        this.timeAdded = timeAdded;
     }
 
     public TransactionType getType() {

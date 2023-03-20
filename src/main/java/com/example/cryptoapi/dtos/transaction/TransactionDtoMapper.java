@@ -20,7 +20,6 @@ public class TransactionDtoMapper {
         dto.setTransactionId(transaction.getId());
         dto.setAmount(transaction.getAmount());
         dto.setPrize(transaction.getPrize());
-        dto.setDate(transaction.getDate());
         dto.setType(transaction.getType());
         dto.setCoinId(transaction.getCoin().getId());
         return dto;
@@ -30,7 +29,6 @@ public class TransactionDtoMapper {
         Transaction transaction = new Transaction();
         transaction.setAmount(dto.getAmount());
         transaction.setPrize(dto.getPrize());
-        transaction.setDate(dto.getDate());
         transaction.setType(dto.getType());
         Coin coin = coinRepository.findById(dto.getCoinId())
                 .orElseThrow(() ->

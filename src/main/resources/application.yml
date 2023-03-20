@@ -5,3 +5,5 @@ spring:
     password:
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create
