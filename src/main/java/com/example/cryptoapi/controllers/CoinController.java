@@ -2,7 +2,7 @@ package com.example.cryptoapi.controllers;
 
 import com.example.cryptoapi.dtos.coin.CoinDto;
 import com.example.cryptoapi.errors.ApiRequestException;
-import com.example.cryptoapi.services.CMCApiService;
+import com.example.cryptoapi.services.CoinApiService;
 import com.example.cryptoapi.services.CoinService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequestMapping("/coins")
 public class CoinController {
     private final CoinService coinService;
-    private final CMCApiService api;
+    private final CoinApiService api;
 
-    public CoinController(CoinService coinService, CMCApiService api) {
+    public CoinController(CoinService coinService, CoinApiService api) {
         this.coinService = coinService;
         this.api = api;
     }
@@ -35,7 +35,7 @@ public class CoinController {
     public ResponseEntity<CoinDto> addCoin(@RequestBody CoinDto dto){
         String coinSymbol = dto.getSymbol();
         if(coinService.existsBySymbol(coinSymbol)){
-            throw new ApiRequestException("This Coin is already in added", HttpStatus.CONFLICT);
+            throw new ApiRequestException("This Coin is already added", HttpStatus.CONFLICT);
         }
         if(!api.isSupportedByApi(coinSymbol)){
             throw new ApiRequestException(

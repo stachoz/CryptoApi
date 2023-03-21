@@ -24,4 +24,4 @@ create table status(
     foreign key (coin_id) references coin(id)
 );
 
-alter table coin add transaction_id bigint not null references transaction(id);
+alter table transaction add coin_id bigint not null references coin(id);
