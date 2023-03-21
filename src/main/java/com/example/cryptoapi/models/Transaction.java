@@ -23,7 +23,6 @@ public class Transaction {
     @NotBlank
     private TransactionType type;
     @ManyToOne
-    @JoinColumn(name = "coin_id")
     private Coin coin;
 
     public Long getId() {

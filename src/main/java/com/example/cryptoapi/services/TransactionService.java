@@ -29,4 +29,8 @@ public class TransactionService {
         Transaction savedTransaction = transactionRepository.save(transactionDtoMapper.map(dto));
         return transactionDtoMapper.map(savedTransaction);
     }
+
+    public void updateStatus(TransactionDto dto){
+
+    }
 }

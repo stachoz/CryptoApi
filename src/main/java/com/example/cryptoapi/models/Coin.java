@@ -22,6 +22,16 @@ public class Coin {
     private String symbol;
     @OneToMany(mappedBy = "coin")
     private List<Transaction> transactions = new ArrayList<>();
+    @OneToMany(mappedBy = "coin")
+    private List<Status> statuses = new ArrayList<>();
+
+    public List<Status> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+    }
 
     public void setId(Long id) {
         this.id = id;
