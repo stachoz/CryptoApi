@@ -1,6 +1,10 @@
 package com.example.cryptoapi.services;
 
 import com.example.cryptoapi.repos.CoinRepository;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.msgpack.util.json.JSON;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,15 +14,26 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 @Service
 public class CoinApiService {
-    private final CoinRepository coinRepository;
-
-    public CoinApiService(CoinRepository coinRepository) {
-        this.coinRepository = coinRepository;
+    public Optional<JSONObject> getExchangeRate(String coinSymbol){
+        String symbol = coinSymbol.toUpperCase();
+        String currency = "PLN";
+        String url = "https://rest.coinapi.io/v1/exchangerate/" + symbol + "/" + currency;
+        try{
+            HttpResponse<String> response = getResponse(url);
+            String body = response.body();
+            JSONParser jsonParser = new JSONParser();
+            JSONObject json = (JSONObject) jsonParser.parse(body);
+            return Optional.of(json);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
-
+    
     public boolean isSupportedByApi(String coinSymbol){
         String symbol = coinSymbol.toUpperCase();
         String currency = "PLN";

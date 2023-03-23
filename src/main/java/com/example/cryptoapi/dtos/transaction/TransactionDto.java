@@ -3,12 +3,11 @@ package com.example.cryptoapi.dtos.transaction;
 import com.example.cryptoapi.models.TransactionType;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class TransactionDto {
     private Long transactionId;
     private BigDecimal amount;
-    private BigDecimal prize;
+    private BigDecimal price;
     private TransactionType type;
     private Long coinId;
 
@@ -44,12 +43,12 @@ public class TransactionDto {
         this.amount = amount;
     }
 
-    public BigDecimal getPrize() {
-        return prize;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPrize(BigDecimal prize) {
-        this.prize = prize;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
 }

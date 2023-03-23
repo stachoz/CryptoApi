@@ -14,8 +14,12 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Column(precision = 126, scale = 15)
     private BigDecimal amount;
-    private BigDecimal prize;
+
+    @Column(precision = 126, scale = 15)
+    @NotNull
+    private BigDecimal price;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeAdded;
@@ -41,12 +45,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public BigDecimal getPrize() {
-        return prize;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setPrize(BigDecimal prize) {
-        this.prize = prize;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Date getTimeAdded() {

@@ -11,8 +11,10 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Column(precision = 126, scale = 15)
     private BigDecimal currentAmount;
     @NotNull
+    @Column(precision = 126, scale = 15)
     private BigDecimal currentProfit;
     @ManyToOne
     private Coin coin;

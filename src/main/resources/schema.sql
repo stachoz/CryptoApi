@@ -10,16 +10,16 @@ create table coin(
 
 create table transaction(
     id bigint auto_increment primary key,
-    amount decimal not null,
-    prize decimal not null,
+    amount decimal(126, 15) not null,
+    price decimal(126, 15) not null,
     time_added timestamp,
     type varchar(10) not null
 );
 
 create table status(
     id bigint auto_increment primary key,
-    current_amount decimal not null,
-    current_profit decimal not null,
+    current_amount decimal(126, 15) not null,
+    current_profit decimal(126, 15) not null,
     coin_id bigint not null,
     foreign key (coin_id) references coin(id)
 );

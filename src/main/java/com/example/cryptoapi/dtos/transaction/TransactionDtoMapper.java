@@ -7,6 +7,8 @@ import com.example.cryptoapi.repos.CoinRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class TransactionDtoMapper {
     private final CoinRepository coinRepository;
@@ -19,7 +21,7 @@ public class TransactionDtoMapper {
         TransactionDto dto = new TransactionDto();
         dto.setTransactionId(transaction.getId());
         dto.setAmount(transaction.getAmount());
-        dto.setPrize(transaction.getPrize());
+        dto.setPrice(transaction.getPrice());
         dto.setType(transaction.getType());
         dto.setCoinId(transaction.getCoin().getId());
         return dto;
@@ -28,7 +30,7 @@ public class TransactionDtoMapper {
     public Transaction map(TransactionDto dto){
         Transaction transaction = new Transaction();
         transaction.setAmount(dto.getAmount());
-        transaction.setPrize(dto.getPrize());
+        transaction.setPrice(dto.getPrice());
         transaction.setType(dto.getType());
         Coin coin = coinRepository.findById(dto.getCoinId())
                 .orElseThrow(() ->
