@@ -1,14 +1,10 @@
 package com.example.cryptoapi.services;
 
-import com.example.cryptoapi.repos.CoinRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.msgpack.util.json.JSON;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -18,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class CoinApiService {
-    public Optional<JSONObject> getExchangeRate(String coinSymbol){
+    public Optional<JSONObject> getCoinJSON(String coinSymbol){
         String symbol = coinSymbol.toUpperCase();
         String currency = "PLN";
         String url = "https://rest.coinapi.io/v1/exchangerate/" + symbol + "/" + currency;

@@ -16,8 +16,20 @@ public class Status {
     @NotNull
     @Column(precision = 126, scale = 15)
     private BigDecimal currentProfit;
+
+    @NotNull
+    @Column(precision = 126, scale = 15)
+    private BigDecimal historicalCoinPrice;
     @ManyToOne
     private Coin coin;
+
+    public BigDecimal getHistoricalCoinPrice() {
+        return historicalCoinPrice;
+    }
+
+    public void setHistoricalCoinPrice(BigDecimal historicalCoinPrice) {
+        this.historicalCoinPrice = historicalCoinPrice;
+    }
 
     public Long getId() {
         return id;
