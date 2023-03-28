@@ -4,6 +4,7 @@ import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.models.Coin;
 import com.example.cryptoapi.models.Status;
 import com.example.cryptoapi.models.Transaction;
+import com.example.cryptoapi.models.TransactionType;
 import com.example.cryptoapi.repos.CoinRepository;
 import com.example.cryptoapi.repos.StatusRepository;
 import com.example.cryptoapi.repos.TransactionRepository;
@@ -43,8 +44,13 @@ public class StatusService {
             BigDecimal transactionAmount = transaction.getAmount();
             BigDecimal transactionPrice = transaction.getPrice();
             BigDecimal profitFromOneTransaction = countProfit(transactionAmount, transactionPrice, currentCoinPrice);
-            profit = profit.add(profitFromOneTransaction);
-            amount =  amount.add(transactionAmount);
+            if(transaction.getType() == TransactionType.BUY){
+                profit = profit.add(profitFromOneTransaction);
+                amount =  amount.add(transactionAmount);
+            } else {
+                profit = profit.subtract(profitFromOneTransaction);
+                amount = amount.subtract(transactionAmount);
+            }
         }
         status.setCoin(coin);
         status.setHistoricalCoinPrice(currentCoinPrice);
