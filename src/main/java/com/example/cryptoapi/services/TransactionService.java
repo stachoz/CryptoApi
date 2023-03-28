@@ -3,12 +3,15 @@ package com.example.cryptoapi.services;
 import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.dtos.transaction.TransactionDtoMapper;
 import com.example.cryptoapi.models.Transaction;
+import com.example.cryptoapi.models.TransactionType;
 import com.example.cryptoapi.repos.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -28,9 +31,19 @@ public class TransactionService {
         return transactions;
     }
     @Transactional
-    public TransactionDto saveTransaction(TransactionDto dto){
+    public Optional<TransactionDto> saveTransaction(TransactionDto dto){
+        BigDecimal transactionAmount = dto.getAmount();
+        Long coinId = dto.getCoinId();
+        if(dto.getType() == TransactionType.SELL && !isSellCoinAmountValid(transactionAmount, coinId)){
+            return Optional.empty();
+        }
         Transaction savedTransaction = transactionRepository.save(transactionDtoMapper.map(dto));
         statusService.updateStatus(dto);
-        return transactionDtoMapper.map(savedTransaction);
+        return Optional.of(transactionDtoMapper.map(savedTransaction));
+    }
+
+    private boolean isSellCoinAmountValid(BigDecimal transactionCoinAmount, Long coinId){
+        BigDecimal currentCoinAmount = statusService.getCurrentCoinAmountById(coinId);
+        return transactionCoinAmount.compareTo(currentCoinAmount) > 0;
     }
 }

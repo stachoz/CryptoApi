@@ -29,6 +29,12 @@ public class StatusService {
         this.coinApiService = coinApiService;
         this.transactionRepository = transactionRepository;
     }
+
+    public BigDecimal getCurrentCoinAmountById(Long coinId){
+        return statusRepository.findTopByCoin_IdOrderByIdDesc(coinId)
+                .map(Status::getCurrentAmount)
+                .orElse(BigDecimal.ZERO);
+    }
     public void updateStatus(TransactionDto transactionDto){
         Long coinId = transactionDto.getCoinId();
         Coin coin = coinRepository.findById(coinId).orElseThrow(NoSuchElementException::new);
