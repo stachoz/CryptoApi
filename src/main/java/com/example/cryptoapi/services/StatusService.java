@@ -3,52 +3,63 @@ package com.example.cryptoapi.services;
 import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.models.Coin;
 import com.example.cryptoapi.models.Status;
-import com.example.cryptoapi.models.TransactionType;
+import com.example.cryptoapi.models.Transaction;
 import com.example.cryptoapi.repos.CoinRepository;
 import com.example.cryptoapi.repos.StatusRepository;
+import com.example.cryptoapi.repos.TransactionRepository;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class StatusService {
     private final CoinRepository coinRepository;
     private final StatusRepository statusRepository;
     private final CoinApiService coinApiService;
+    private final TransactionRepository transactionRepository;
 
-    public StatusService(CoinRepository coinRepository, StatusRepository statusRepository, CoinApiService coinApiService) {
+    public StatusService(CoinRepository coinRepository, StatusRepository statusRepository, CoinApiService coinApiService,
+                         TransactionRepository transactionRepository) {
         this.coinRepository = coinRepository;
         this.statusRepository = statusRepository;
         this.coinApiService = coinApiService;
+        this.transactionRepository = transactionRepository;
     }
     public void updateStatus(TransactionDto transactionDto){
-        Status status = new Status();
-        BigDecimal transactionCoinAmount = transactionDto.getAmount();
-        BigDecimal transactionCoinPrice = transactionDto.getPrice();
         Long coinId = transactionDto.getCoinId();
-        Optional<Status> lastStatus = statusRepository.findTopByCoin_IdOrderByIdDesc(coinId);
         Coin coin = coinRepository.findById(coinId).orElseThrow(NoSuchElementException::new);
         String coinSymbol = coin.getSymbol();
+        List<Transaction> transactions = transactionRepository.findAllByCoin_Id(coinId).orElseThrow(NoSuchElementException::new);
+        Status status = new Status();
 
         BigDecimal currentCoinPrice = getCurrentCoinPrice(coinSymbol);
-        BigDecimal profitFromTransaction = countProfit(coinSymbol, transactionCoinAmount, transactionCoinPrice, currentCoinPrice);
 
-        if(!lastStatus.isPresent()) {
-            status.setCurrentAmount(transactionCoinAmount);
-            status.setCurrentProfit(profitFromTransaction);
-            status.setHistoricalCoinPrice(currentCoinPrice);
-            status.setCoin(coin);
-        } 
+        BigDecimal profit = BigDecimal.valueOf(0);
+        BigDecimal amount = BigDecimal.valueOf(0);
+        for (Transaction transaction : transactions) {
+            BigDecimal transactionAmount = transaction.getAmount();
+            BigDecimal transactionPrice = transaction.getPrice();
+            BigDecimal profitFromOneTransaction = countProfit(transactionAmount, transactionPrice, currentCoinPrice);
+            profit = profit.add(profitFromOneTransaction);
+            amount =  amount.add(transactionAmount);
+        }
+        status.setCoin(coin);
+        status.setHistoricalCoinPrice(currentCoinPrice);
+        status.setCurrentAmount(amount);
+        status.setCurrentProfit(profit);
         statusRepository.save(status);
     }
 
-    private BigDecimal countProfit(String coinSymbol, BigDecimal amount, BigDecimal transactionPrice, BigDecimal currentPrice) {
+    /*
+        negative value possible
+    */
+    private BigDecimal countProfit(BigDecimal amount, BigDecimal transactionPrice, BigDecimal currentPrice) {
         BigDecimal transactionRatio = amount.multiply(transactionPrice);
         BigDecimal currentRatio = amount.multiply(currentPrice);
-        return  transactionRatio.subtract(currentRatio);
+        return currentRatio.subtract(transactionRatio);
     }
 
     private BigDecimal getCurrentCoinPrice(String coinSymbol){

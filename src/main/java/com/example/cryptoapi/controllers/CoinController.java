@@ -55,6 +55,6 @@ public class CoinController {
     public ResponseEntity<CoinDto> findById(@PathVariable Long id){
         return coinService.findById(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ApiRequestException(String.format("Coin with given id (%d) does not exists", id), HttpStatus.NO_CONTENT));
     }
 }
