@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,13 @@ public class TransactionService {
         transactionRepository.findAll().forEach(
                 t -> transactions.add(transactionDtoMapper.map(t)));
         return transactions;
+    }
+
+    public List<TransactionDto> getTransactionsByCoinId(Long coinId){
+        List<Transaction> transactions = transactionRepository.findAllByCoin_Id(coinId).orElseThrow(NoSuchElementException::new);
+        List<TransactionDto> transactionsDto = new ArrayList<>();
+        transactions.forEach( t -> transactionsDto.add(transactionDtoMapper.map(t)));
+        return transactionsDto;
     }
     @Transactional
     public Optional<TransactionDto> saveTransaction(TransactionDto dto){

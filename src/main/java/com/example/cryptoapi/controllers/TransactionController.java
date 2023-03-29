@@ -24,17 +24,24 @@ public class TransactionController {
     @GetMapping("")
     ResponseEntity<List<TransactionDto>> getAllTransactions(){
         List<TransactionDto> allTransactions = transactionService.getAllTransactions();
-        if(allTransactions.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if(allTransactions.isEmpty()) throw new ApiRequestException("There are no transactions", HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(allTransactions);
+    }
+
+    @GetMapping("/{coinId}") ResponseEntity<List<TransactionDto>> getTransactionByCoinId(@PathVariable Long coinId){
+        List<TransactionDto> transactions = transactionService.getTransactionsByCoinId(coinId);
+        if(transactions.isEmpty()) throw new ApiRequestException(
+                String.format("There are no transactions related to coin with id (%d)", coinId),
+                HttpStatus.NOT_FOUND
+        );
+        return ResponseEntity.ok(transactions);
     }
 
     @PostMapping("")
     ResponseEntity<TransactionDto> saveTransaction(@RequestBody TransactionDto dto){
         Optional<TransactionDto> savedTransaction = transactionService.saveTransaction(dto);
         if(savedTransaction.isEmpty()) throw new ApiRequestException(
-                "You are trying to sell more than you have. Chceck you coin amount", HttpStatus.BAD_REQUEST
+                "You are trying to sell more than you have. Check your coin amount", HttpStatus.BAD_REQUEST
         );
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
