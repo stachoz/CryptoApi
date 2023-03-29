@@ -4,6 +4,7 @@ import com.example.cryptoapi.errors.ApiRequestException;
 import com.example.cryptoapi.models.Coin;
 import com.example.cryptoapi.models.Transaction;
 import com.example.cryptoapi.repos.CoinRepository;
+import com.example.cryptoapi.services.StatusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.math.BigDecimal;
 @Service
 public class TransactionDtoMapper {
     private final CoinRepository coinRepository;
+    private final StatusService statusService;
 
-    public TransactionDtoMapper(CoinRepository coinRepository) {
+    public TransactionDtoMapper(CoinRepository coinRepository, StatusService statusService) {
         this.coinRepository = coinRepository;
+        this.statusService = statusService;
     }
 
     public TransactionDto map(Transaction transaction){
@@ -30,14 +33,18 @@ public class TransactionDtoMapper {
     public Transaction map(TransactionDto dto){
         Transaction transaction = new Transaction();
         transaction.setAmount(dto.getAmount());
-        transaction.setPrice(dto.getPrice());
-        transaction.setType(dto.getType());
         Coin coin = coinRepository.findById(dto.getCoinId())
                 .orElseThrow(() ->
                         new ApiRequestException(String.format("Coin with given id (%d) does not exists", dto.getCoinId()),
-                        HttpStatus.BAD_REQUEST)
+                                HttpStatus.BAD_REQUEST)
                 );
         transaction.setCoin(coin);
+        BigDecimal price = dto.getPrice();
+        if(price == null){
+            price = statusService.getCurrentCoinPrice(coin.getSymbol());
+        }
+        transaction.setPrice(price);
+        transaction.setType(dto.getType());
         return transaction;
     }
 }

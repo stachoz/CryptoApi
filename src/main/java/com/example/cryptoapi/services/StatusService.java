@@ -84,7 +84,7 @@ public class StatusService {
         return currentRatio.subtract(transactionRatio);
     }
 
-    private BigDecimal getCurrentCoinPrice(String coinSymbol){
+    public BigDecimal getCurrentCoinPrice(String coinSymbol){
         JSONObject coinJson = coinApiService.getCoinJSON(coinSymbol).orElseThrow(NoSuchElementException::new);
         Double rate = (Double) coinJson.get("rate");
         return BigDecimal.valueOf(rate);
