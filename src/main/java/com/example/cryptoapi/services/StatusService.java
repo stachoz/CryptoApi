@@ -1,5 +1,7 @@
 package com.example.cryptoapi.services;
 
+import com.example.cryptoapi.dtos.status.StatusDto;
+import com.example.cryptoapi.dtos.status.StatusDtoMapper;
 import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.models.Coin;
 import com.example.cryptoapi.models.Status;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class StatusService {
@@ -21,13 +24,20 @@ public class StatusService {
     private final StatusRepository statusRepository;
     private final CoinApiService coinApiService;
     private final TransactionRepository transactionRepository;
+    private final StatusDtoMapper statusDtoMapper;
 
     public StatusService(CoinRepository coinRepository, StatusRepository statusRepository, CoinApiService coinApiService,
-                         TransactionRepository transactionRepository) {
+                         TransactionRepository transactionRepository, StatusDtoMapper statusDtoMapper) {
         this.coinRepository = coinRepository;
         this.statusRepository = statusRepository;
         this.coinApiService = coinApiService;
         this.transactionRepository = transactionRepository;
+        this.statusDtoMapper = statusDtoMapper;
+    }
+
+    public Optional<StatusDto> getStatusByCoinId(Long id){
+        return statusRepository.findTopByCoin_IdOrderByIdDesc(id)
+                .map(statusDtoMapper::map);
     }
 
     public BigDecimal getCurrentCoinAmountById(Long coinId){
