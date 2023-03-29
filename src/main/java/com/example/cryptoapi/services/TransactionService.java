@@ -44,6 +44,6 @@ public class TransactionService {
 
     private boolean isSellCoinAmountValid(BigDecimal transactionCoinAmount, Long coinId){
         BigDecimal currentCoinAmount = statusService.getCurrentCoinAmountById(coinId);
-        return transactionCoinAmount.compareTo(currentCoinAmount) > 0;
+        return transactionCoinAmount.compareTo(currentCoinAmount) <= 0;
     }
 }
