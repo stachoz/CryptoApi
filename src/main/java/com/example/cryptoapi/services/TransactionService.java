@@ -46,7 +46,7 @@ public class TransactionService {
             return Optional.empty();
         }
         Transaction savedTransaction = transactionRepository.save(transactionDtoMapper.map(dto));
-        statusService.updateStatus(dto);
+        statusService.updateStatus(dto.getCoinId());
         return Optional.of(transactionDtoMapper.map(savedTransaction));
     }
 

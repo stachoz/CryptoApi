@@ -36,8 +36,12 @@ public class StatusService {
     }
 
     public Optional<StatusDto> getStatusByCoinId(Long id){
-        return statusRepository.findTopByCoin_IdOrderByIdDesc(id)
+        Optional<StatusDto> statusDto = statusRepository.findTopByCoin_IdOrderByIdDesc(id)
                 .map(statusDtoMapper::map);
+        if (statusDto.isPresent()){
+            updateStatus(id);
+        }
+        return statusDto;   
     }
 
     public BigDecimal getCurrentCoinAmountById(Long coinId){
@@ -45,8 +49,7 @@ public class StatusService {
                 .map(Status::getCurrentAmount)
                 .orElse(BigDecimal.ZERO);
     }
-    public void updateStatus(TransactionDto transactionDto){
-        Long coinId = transactionDto.getCoinId();
+    public void updateStatus(Long coinId){
         Coin coin = coinRepository.findById(coinId).orElseThrow(NoSuchElementException::new);
         String coinSymbol = coin.getSymbol();
         List<Transaction> transactions = transactionRepository.findAllByCoin_Id(coinId).orElseThrow(NoSuchElementException::new);
