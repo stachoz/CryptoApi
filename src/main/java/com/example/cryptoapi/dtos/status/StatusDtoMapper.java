@@ -11,6 +11,7 @@ public class StatusDtoMapper {
         dto.setCurrentAmount(status.getCurrentAmount());
         dto.setCurrentProfit(status.getCurrentProfit());
         dto.setHistoricalCoinPrice(status.getHistoricalCoinPrice());
+        dto.setTotalCurrencyValue(status.getTotalCurrencyValue());
         return dto;
     }
 

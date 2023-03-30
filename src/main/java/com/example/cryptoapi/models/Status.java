@@ -20,8 +20,20 @@ public class Status {
     @NotNull
     @Column(precision = 126, scale = 15)
     private BigDecimal historicalCoinPrice;
+
+    @NotNull
+    @Column(name = "total_currency_value", precision = 126, scale = 15)
+    private BigDecimal totalCurrencyValue;
     @ManyToOne
     private Coin coin;
+
+    public BigDecimal getTotalCurrencyValue() {
+        return totalCurrencyValue;
+    }
+
+    public void setTotalCurrencyValue(BigDecimal totalCurrencyValue) {
+        this.totalCurrencyValue = totalCurrencyValue;
+    }
 
     public BigDecimal getHistoricalCoinPrice() {
         return historicalCoinPrice;

@@ -32,18 +32,19 @@ public class TransactionDtoMapper {
 
     public Transaction map(TransactionDto dto){
         Transaction transaction = new Transaction();
-        transaction.setAmount(dto.getAmount());
+        BigDecimal dtoAmount = dto.getAmount();
+        BigDecimal dtoPrice = dto.getPrice();
+        transaction.setAmount(dtoAmount);
         Coin coin = coinRepository.findById(dto.getCoinId())
                 .orElseThrow(() ->
                         new ApiRequestException(String.format("Coin with given id (%d) does not exists", dto.getCoinId()),
                                 HttpStatus.BAD_REQUEST)
                 );
         transaction.setCoin(coin);
-        BigDecimal price = dto.getPrice();
-        if(price == null){
-            price = statusService.getCurrentCoinPrice(coin.getSymbol());
+        if(dtoPrice == null){
+            dtoPrice = statusService.getCurrentCoinPrice(coin.getSymbol());
         }
-        transaction.setPrice(price);
+        transaction.setPrice(dtoPrice);
         transaction.setType(dto.getType());
         return transaction;
     }

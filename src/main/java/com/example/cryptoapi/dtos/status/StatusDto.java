@@ -7,6 +7,15 @@ public class StatusDto {
     private BigDecimal currentAmount;
     private BigDecimal currentProfit;
     private BigDecimal historicalCoinPrice;
+    private BigDecimal totalCurrencyValue;
+
+    public BigDecimal getTotalCurrencyValue() {
+        return totalCurrencyValue;
+    }
+
+    public void setTotalCurrencyValue(BigDecimal totalCurrencyValue) {
+        this.totalCurrencyValue = totalCurrencyValue;
+    }
 
     public Long getId() {
         return id;

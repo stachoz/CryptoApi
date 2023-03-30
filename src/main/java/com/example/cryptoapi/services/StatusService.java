@@ -56,6 +56,7 @@ public class StatusService {
 
         BigDecimal profit = BigDecimal.valueOf(0);
         BigDecimal amount = BigDecimal.valueOf(0);
+        BigDecimal value = BigDecimal.valueOf(0);
         for (Transaction transaction : transactions) {
             BigDecimal transactionAmount = transaction.getAmount();
             BigDecimal transactionPrice = transaction.getPrice();
@@ -63,15 +64,18 @@ public class StatusService {
             if(transaction.getType() == TransactionType.BUY){
                 profit = profit.add(profitFromOneTransaction);
                 amount =  amount.add(transactionAmount);
+                value = value.add(transactionAmount.multiply(transactionPrice));
             } else {
                 profit = profit.subtract(profitFromOneTransaction);
                 amount = amount.subtract(transactionAmount);
+                value = value.subtract(transactionAmount.multiply(transactionPrice));
             }
         }
         status.setCoin(coin);
         status.setHistoricalCoinPrice(currentCoinPrice);
         status.setCurrentAmount(amount);
         status.setCurrentProfit(profit);
+        status.setTotalCurrencyValue(value);
         statusRepository.save(status);
     }
 
