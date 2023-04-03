@@ -2,6 +2,7 @@ package com.example.cryptoapi.controllers;
 
 import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.errors.ApiRequestException;
+import com.example.cryptoapi.models.TransactionType;
 import com.example.cryptoapi.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,13 @@ public class TransactionController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<TransactionDto>> getAllTransactions(){
-        List<TransactionDto> allTransactions = transactionService.getAllTransactions();
+    ResponseEntity<List<TransactionDto>> getAllTransactions(@RequestParam(name = "type", required = false) TransactionType type){
+        List<TransactionDto> allTransactions;
+        if(type == null){
+            allTransactions = transactionService.getAllTransactions();
+        } else {
+            allTransactions = transactionService.getTransactionsByType(type);
+        }
         if(allTransactions.isEmpty()) throw new ApiRequestException("There are no transactions", HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(allTransactions);
     }
@@ -49,8 +55,4 @@ public class TransactionController {
                 .toUri();
         return ResponseEntity.created(uri).body(savedTransaction.get());
     }
-
-
-
-
 }

@@ -2,10 +2,13 @@ package com.example.cryptoapi.controllers;
 
 import com.example.cryptoapi.dtos.status.StatusDto;
 import com.example.cryptoapi.dtos.coin.CoinDto;
+import com.example.cryptoapi.dtos.transaction.TransactionDto;
 import com.example.cryptoapi.errors.ApiRequestException;
+import com.example.cryptoapi.models.TransactionType;
 import com.example.cryptoapi.services.CoinApiService;
 import com.example.cryptoapi.services.CoinService;
 import com.example.cryptoapi.services.StatusService;
+import com.example.cryptoapi.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,4 +74,5 @@ public class CoinController {
         );
         return ResponseEntity.ok(statusDto.get());
     }
+
 }

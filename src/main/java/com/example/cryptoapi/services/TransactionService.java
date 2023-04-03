@@ -50,6 +50,15 @@ public class TransactionService {
         return Optional.of(transactionDtoMapper.map(savedTransaction));
     }
 
+    public List<TransactionDto> getTransactionsByType(TransactionType type){
+        List<Transaction> transactions = transactionRepository.findAllByType(type);
+        List<TransactionDto> transactionDtos = new ArrayList<>();
+        transactions.forEach(
+                t -> transactionDtos.add(transactionDtoMapper.map(t))
+        );
+        return transactionDtos;
+    }
+
     private boolean isSellCoinAmountValid(BigDecimal transactionCoinAmount, Long coinId){
         BigDecimal currentCoinAmount = statusService.getCurrentCoinAmountById(coinId);
         return transactionCoinAmount.compareTo(currentCoinAmount) <= 0;
