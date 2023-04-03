@@ -75,7 +75,6 @@ public class StatusService {
             }
         }
         status.setCoin(coin);
-        status.setHistoricalCoinPrice(currentCoinPrice);
         status.setCurrentAmount(amount);
         status.setCurrentProfit(profit);
         status.setTotalCurrencyValue(value);

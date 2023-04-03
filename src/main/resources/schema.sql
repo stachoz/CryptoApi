@@ -20,7 +20,6 @@ create table status(
     id bigint auto_increment primary key,
     current_amount decimal(126, 15) not null,
     current_profit decimal(126, 15) not null,
-    historical_coin_price decimal(126, 15) not null,
     coin_id bigint not null,
     total_currency_value decimal(126, 15) not null,
     foreign key (coin_id) references coin(id)

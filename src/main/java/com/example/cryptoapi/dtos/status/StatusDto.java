@@ -6,7 +6,6 @@ public class StatusDto {
     private Long id;
     private BigDecimal currentAmount;
     private BigDecimal currentProfit;
-    private BigDecimal historicalCoinPrice;
     private BigDecimal totalCurrencyValue;
 
     public BigDecimal getTotalCurrencyValue() {
@@ -39,13 +38,5 @@ public class StatusDto {
 
     public void setCurrentProfit(BigDecimal currentProfit) {
         this.currentProfit = currentProfit;
-    }
-
-    public BigDecimal getHistoricalCoinPrice() {
-        return historicalCoinPrice;
-    }
-
-    public void setHistoricalCoinPrice(BigDecimal historicalCoinPrice) {
-        this.historicalCoinPrice = historicalCoinPrice;
     }
 }
