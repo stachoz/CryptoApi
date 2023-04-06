@@ -42,5 +42,10 @@ public class CoinService {
         return coinRepository.existsBySymbol(coinSymbol);
     }
 
+    public boolean existsById(Long id){
+        return coinRepository.existsById(id);
+    }
+
+
 
 }

@@ -13,5 +13,4 @@ public class StatusDtoMapper {
         dto.setTotalCurrencyValue(status.getTotalCurrencyValue());
         return dto;
     }
-
 }

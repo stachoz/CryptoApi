@@ -68,11 +68,11 @@ public class CoinController {
 
     @GetMapping("/{id}/status")
     public ResponseEntity<StatusDto> getStatus(@PathVariable Long id){
-        Optional<StatusDto> statusDto = statusService.getStatusByCoinId(id);
-        if (!statusDto.isPresent()) throw new ApiRequestException(
-                "Unable to get coin status", HttpStatus.NOT_FOUND
+        if(!coinService.existsById(id)) throw new ApiRequestException(
+                String.format("Coin with given id {%d} does not exists", id), HttpStatus.NOT_FOUND
         );
-        return ResponseEntity.ok(statusDto.get());
+        StatusDto statusDto = statusService.countStatus(id);
+        return ResponseEntity.ok(statusDto);
     }
 
 }

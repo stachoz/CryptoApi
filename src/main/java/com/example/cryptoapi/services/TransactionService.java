@@ -38,17 +38,6 @@ public class TransactionService {
         transactions.forEach( t -> transactionsDto.add(transactionDtoMapper.map(t)));
         return transactionsDto;
     }
-    @Transactional
-    public Optional<TransactionDto> saveTransaction(TransactionDto dto){
-        BigDecimal transactionAmount = dto.getAmount();
-        Long coinId = dto.getCoinId();
-        if(dto.getType() == TransactionType.SELL && !isSellCoinAmountValid(transactionAmount, coinId)){
-            return Optional.empty();
-        }
-        Transaction savedTransaction = transactionRepository.save(transactionDtoMapper.map(dto));
-        statusService.updateStatus(dto.getCoinId());
-        return Optional.of(transactionDtoMapper.map(savedTransaction));
-    }
 
     public List<TransactionDto> getTransactionsByType(TransactionType type){
         List<Transaction> transactions = transactionRepository.findAllByType(type);
@@ -57,6 +46,16 @@ public class TransactionService {
                 t -> transactionDtos.add(transactionDtoMapper.map(t))
         );
         return transactionDtos;
+    }
+    @Transactional
+    public Optional<TransactionDto> saveTransaction(TransactionDto dto){
+        BigDecimal transactionAmount = dto.getAmount();
+        Long coinId = dto.getCoinId();
+        if(dto.getType() == TransactionType.SELL && !isSellCoinAmountValid(transactionAmount, coinId)){
+            return Optional.empty();
+        }
+        Transaction savedTransaction = transactionRepository.save(transactionDtoMapper.map(dto));
+        return Optional.of(transactionDtoMapper.map(savedTransaction));
     }
 
     private boolean isSellCoinAmountValid(BigDecimal transactionCoinAmount, Long coinId){

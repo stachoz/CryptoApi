@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CoinApiService {
     public Optional<JSONObject> getCoinJSON(String coinSymbol){
         String symbol = coinSymbol.toUpperCase();
-        String currency = "PLN";
+        String currency = "USD";
         String url = "https://rest.coinapi.io/v1/exchangerate/" + symbol + "/" + currency;
         try{
             HttpResponse<String> response = getResponse(url);
