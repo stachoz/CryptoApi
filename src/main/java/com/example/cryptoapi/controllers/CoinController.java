@@ -1,14 +1,11 @@
 package com.example.cryptoapi.controllers;
 
-import com.example.cryptoapi.dtos.status.StatusDto;
 import com.example.cryptoapi.dtos.coin.CoinDto;
-import com.example.cryptoapi.dtos.transaction.TransactionDto;
+import com.example.cryptoapi.dtos.status.StatusDto;
 import com.example.cryptoapi.errors.ApiRequestException;
-import com.example.cryptoapi.models.TransactionType;
 import com.example.cryptoapi.services.CoinApiService;
 import com.example.cryptoapi.services.CoinService;
 import com.example.cryptoapi.services.StatusService;
-import com.example.cryptoapi.services.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/coins")
@@ -63,7 +59,7 @@ public class CoinController {
     public ResponseEntity<CoinDto> findById(@PathVariable Long id){
         return coinService.findById(id)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ApiRequestException(String.format("Coin with given id (%d) does not exists", id), HttpStatus.NO_CONTENT));
+                .orElseThrow(() -> new ApiRequestException(String.format("Coin with given id (%d) does not exists", id), HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{id}/status")
